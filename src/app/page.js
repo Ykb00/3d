@@ -1,9 +1,27 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the STL viewer component to avoid SSR issues
+const STLViewer = dynamic(() => import('@/components/STLViewer'), {
+  ssr: false,
+});
 
 export default function Home() {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile && selectedFile.name.endsWith('.stl')) {
+      setFile(selectedFile);
+    }
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start w-full">
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -12,6 +30,23 @@ export default function Home() {
           height={38}
           priority
         />
+        
+        {/* STL Viewer Section */}
+        <div className="w-full max-w-3xl mx-auto">
+          <h2 className="text-xl font-bold mb-4 text-center">STL Viewer</h2>
+          
+          <div className="mb-4 flex justify-center">
+            <input
+              type="file"
+              accept=".stl"
+              onChange={handleFileChange}
+              className="bg-black/[.05] dark:bg-white/[.06] px-4 py-2 rounded"
+            />
+          </div>
+          
+          {file && <STLViewer file={file} />}
+        </div>
+
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}
