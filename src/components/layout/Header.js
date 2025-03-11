@@ -21,7 +21,7 @@ export default function Header() {
           <nav className="hidden md:flex space-x-8">
             <Link href="/" className="hover:text-blue-200 transition">Home</Link>
             <Link href="/designers" className="hover:text-blue-200 transition">Designers</Link>
-            <Link href="/pricing" className="hover:text-blue-200 transition">Pricing</Link>
+            <Link href="/payment" className="hover:text-blue-200 transition">Pricing</Link>
           </nav>
           
           {/* Mobile menu button */}
@@ -42,7 +42,7 @@ export default function Header() {
           <nav className="mt-4 md:hidden flex flex-col space-y-3 pb-3">
             <Link href="/" className="hover:text-blue-200 transition">Home</Link>
             <Link href="/designers" className="hover:text-blue-200 transition">Designers</Link>
-            <Link href="/pricing" className="hover:text-blue-200 transition">Pricing</Link>
+            <Link href="/payment" className="hover:text-blue-200 transition">Pricing</Link>
           </nav>
         )}
       </div>

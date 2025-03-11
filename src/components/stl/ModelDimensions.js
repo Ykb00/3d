@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 import { materialPricing, materialDensity } from '@/lib/materialPricing';
 
-const ModelDimensions = ({ dimensions }) => {
+const ModelDimensions = ({ dimensions, file }) => {
+  const router = useRouter();
   const [units, setUnits] = useState('mm');
   const [strength, setStrength] = useState('basic');
   const [material, setMaterial] = useState('PLA');
@@ -14,7 +16,7 @@ const ModelDimensions = ({ dimensions }) => {
   const materialColors = {
     PLA: ['white', 'black'],
     ABS: ['black', 'grey'],
-    coloredPLA: [ 'red/yellow', 'purple/green']
+    coloredPLA: ['red/yellow', 'purple/green']
   };
 
   // Map strength to infill percentage
@@ -43,6 +45,49 @@ const ModelDimensions = ({ dimensions }) => {
   useEffect(() => {
     setColor(materialColors[material][0]);
   }, [material]);
+
+  const handlePayAdvance = () => {
+    if (!dimensions) return;
+    
+    // Generate a unique ID for the order
+    const orderId = uuidv4();
+    
+    // Get infill percentage from strength
+    const infillPercentage = `${strengthToInfill[strength].percentage}%`;
+    
+    // Create a query string with all the necessary parameters
+    const queryParams = new URLSearchParams({
+      id: orderId,
+      filePath: file ? file.name : 'unnamed-model.stl',
+      width: dimensions.width.toFixed(2),
+      height: dimensions.height.toFixed(2),
+      depth: dimensions.depth.toFixed(2),
+      volume: dimensions.volume.toFixed(2),
+      material: material,
+      color: color,
+      infill: infillPercentage,
+      price: advanceAmount.toFixed(2) // 40% advance payment
+    });
+    
+    // Log the details to console
+    console.log("Sending order details to payment page:", {
+      id: orderId,
+      filePath: file ? file.name : 'unnamed-model.stl',
+      dimensions: {
+        width: dimensions.width,
+        height: dimensions.height,
+        depth: dimensions.depth,
+        volume: dimensions.volume
+      },
+      material,
+      color,
+      infill: infillPercentage,
+      price: advanceAmount // 40% advance
+    });
+    
+    // Navigate to the payment page with the query parameters
+    router.push(`/payment?${queryParams.toString()}`);
+  };
 
   if (!dimensions) {
     return (
@@ -239,11 +284,12 @@ const ModelDimensions = ({ dimensions }) => {
       </div>
       
       {/* Pay Advance Button */}
-      <Link href="/pricing">
-        <button className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium rounded-md shadow-sm transition duration-150 transform hover:scale-[1.01]">
-          Pay Advance (₹{advanceAmount.toFixed(2)})
-        </button>
-      </Link>
+      <button 
+        onClick={handlePayAdvance}
+        className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium rounded-md shadow-sm transition duration-150 transform hover:scale-[1.01]"
+      >
+        Pay Advance (₹{advanceAmount.toFixed(2)})
+      </button>
     </div>
   );
 };
