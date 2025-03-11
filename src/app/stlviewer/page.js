@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import ImageCarousel from '@/components/carousel/ImageCarousel';
-import placeholderImages from '@/components/PlaceholderImages.js';
+import placeholderImages from '@/components/carousel/PlaceholderImages';
 
 // Dynamically import the STL viewer component to avoid SSR issues
 const STLViewerComponent = dynamic(() => import('@/components/stl/STLViewer'), {
