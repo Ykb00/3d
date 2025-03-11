@@ -4,10 +4,10 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import ImageCarousel from '@/components/carousel/ImageCarousel';
-import placeholderImages from '@/components/placeholderimages.js';
+import placeholderImages from '@/components/PlaceholderImages.js';
 
 // Dynamically import the STL viewer component to avoid SSR issues
-const STLViewerComponent = dynamic(() => import('@/components/STLViewer'), {
+const STLViewerComponent = dynamic(() => import('@/components/stl/STLViewer'), {
   ssr: false,
 });
 
@@ -77,7 +77,7 @@ export default function STLViewerPage() {
           </label>
         </div>
       ) : (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto ">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">{file.name}</h2>
             <button 

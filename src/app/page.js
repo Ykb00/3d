@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import UploadBox from '@/components/stl/UploadBox';
 import STLViewer from '@/components/stl/STLViewer';
 import ModelDimensions from '@/components/stl/ModelDimensions';
-import ModelPricing from '@/components/stl/ModelPricing';
 import ImageCarousel from '@/components/carousel/ImageCarousel';
 import placeholderImages from '@/components/carousel/PlaceholderImages';
 
@@ -49,14 +48,16 @@ export default function Home() {
           </p>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 flex justify-center items-center">
-            {!file ? (
-              <div className="w-full flex justify-center">
-                <UploadBox onFileSelect={handleFileSelected} />
-              </div>
-            ) : (
-              <div className="space-y-8 w-full">
+        {!file ? (
+          // Show centered upload box when no file is selected
+          <div className="flex justify-center items-center w-full">
+            <UploadBox onFileSelect={handleFileSelected} />
+          </div>
+        ) : (
+          // Show 3D preview and model dimensions side by side after upload
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-semibold">3D Preview</h2>
                   <button 
@@ -67,7 +68,10 @@ export default function Home() {
                   </button>
                 </div>
                 
-                <STLViewer file={file} onDimensionsCalculated={handleDimensionsCalculated} />
+                {/* Increased height for better visibility */}
+                <div className="h-96 lg:h-[500px]">
+                  <STLViewer file={file} onDimensionsCalculated={handleDimensionsCalculated} />
+                </div>
                 
                 <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r">
                   <p className="text-sm text-blue-800">
@@ -75,18 +79,13 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            )}
+            </div>
+            
+            <div>
+              <ModelDimensions file={file} dimensions={dimensions} />
+            </div>
           </div>
-          
-          <div className="space-y-6">
-            {file && (
-              <>
-                <ModelDimensions file={file} />
-                <ModelPricing dimensions={dimensions} />
-              </>
-            )}
-          </div>
-        </div>
+        )}
         
         {/* Featured Models Section with Carousel */}
         <section className="mt-20 mb-16">
