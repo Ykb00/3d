@@ -1,9 +1,15 @@
 "use client";
 
 import { useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function UploadBox({ onFileSelect }) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  
+  // Initialize Supabase client
+  const supabase = createClientComponentClient();
   
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -14,23 +20,68 @@ export default function UploadBox({ onFileSelect }) {
     setIsDragging(false);
   };
   
+  const uploadToSupabase = async (file) => {
+    if (!file || !file.name.endsWith('.stl')) {
+      alert('Please upload an STL file');
+      return;
+    }
+    
+    setIsUploading(true);
+    
+    try {
+      // Generate a unique filename to prevent conflicts
+      const uniqueFileName = `${uuidv4()}-${file.name}`;
+      
+      // Upload the file to Supabase storage
+      const { data, error } = await supabase
+        .storage
+        .from('stl_files')  // Ensure this matches exactly with your bucket name
+        .upload(uniqueFileName, file, {
+          cacheControl: '3600',
+          upsert: true  // Changed to true to overwrite if file exists
+        });
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Get the public URL of the file
+      const { data: urlData } = supabase
+        .storage
+        .from('stl_files')
+        .getPublicUrl(uniqueFileName);
+      
+      console.log("File uploaded successfully:", {
+        filename: uniqueFileName,
+        publicUrl: urlData.publicUrl,
+        size: file.size,
+        type: file.type
+      });
+      
+      // Pass the file object to parent component for local rendering
+      onFileSelect(file);
+      
+    } catch (error) {
+      console.error("Error uploading file to Supabase:", error);
+      alert("Failed to upload file. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+  
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
-      if (file.name.endsWith('.stl')) {
-        onFileSelect(file);
-      } else {
-        alert('Please upload an STL file');
-      }
+      uploadToSupabase(file);
     }
   };
   
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      onFileSelect(e.target.files[0]);
+      uploadToSupabase(e.target.files[0]);
     }
   };
   
@@ -52,19 +103,31 @@ export default function UploadBox({ onFileSelect }) {
       <h3 className="text-lg font-medium mb-2">Upload your STL file</h3>
       <p className="text-gray-500 mb-4">Drag and drop your STL file here, or click to browse</p>
       
-      <input 
-        type="file" 
-        accept=".stl" 
-        onChange={handleFileChange} 
-        className="hidden" 
-        id="stl-upload" 
-      />
-      <label 
-        htmlFor="stl-upload" 
-        className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer"
-      >
-        Select File
-      </label>
+      {isUploading ? (
+        <div className="flex items-center justify-center space-x-2">
+          <svg className="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span className="text-blue-600 font-medium">Uploading...</span>
+        </div>
+      ) : (
+        <>
+          <input 
+            type="file" 
+            accept=".stl" 
+            onChange={handleFileChange} 
+            className="hidden" 
+            id="stl-upload" 
+          />
+          <label 
+            htmlFor="stl-upload" 
+            className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
+          >
+            Select File
+          </label>
+        </>
+      )}
     </div>
   );
 }

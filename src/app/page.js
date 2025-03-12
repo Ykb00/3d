@@ -61,7 +61,10 @@ export default function Home() {
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-semibold">3D Preview</h2>
                   <button 
-                    onClick={() => setFile(null)}
+                    onClick={() => {
+                      setFile(null);
+                      setDimensions(null);
+                    }}
                     className="text-blue-600 hover:text-blue-800"
                   >
                     Upload Another

@@ -361,7 +361,7 @@ export default function PaymentPage() {
                 <div className="flex flex-col items-center">
                   <div className="w-36 h-36 mb-2 bg-white p-2 rounded-lg shadow-sm">
                     <Image 
-                      src="/images/qr_code.png" 
+                      src="/images/QR_code.jpg" 
                       alt="UPI QR Code" 
                       width={144} 
                       height={144}
