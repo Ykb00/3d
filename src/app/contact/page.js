@@ -1,9 +1,10 @@
 "use client"
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function ContactPage() {
+// Create a separate component that uses useSearchParams
+function ContactContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -97,5 +98,30 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Create a loading fallback component
+function ContactLoading() {
+  return (
+    <div className="container mx-auto px-4 py-12 bg-gray-100">
+      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h1 className="text-3xl font-bold mb-6 text-center text-blue-800 border-b-2 border-blue-200 pb-4">
+          Contact Our 3D Printing Team
+        </h1>
+        <div className="text-center">
+          <p className="text-lg text-gray-700">Loading contact options...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<ContactLoading />}>
+      <ContactContent />
+    </Suspense>
   );
 }
