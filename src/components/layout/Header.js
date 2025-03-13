@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Header() {
@@ -11,9 +12,17 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9.504 1.132a1 1 0 01.992 0l7 4A1 1 0 0118 6v8a1 1 0 01-.504.868l-7 4a1 1 0 01-.992 0l-7-4A1 1 0 011 14V6a1 1 0 01.504-.868l7-4z" clipRule="evenodd" />
-            </svg>
+            <div className="relative h-10 w-10">
+              <Image 
+                src="/images/logoHQ1.png" 
+                alt="Quaticks Logo" 
+                width={40}
+                height={40}
+                style={{ objectFit: 'contain' }}
+                priority
+                
+              />
+            </div>
             <Link href="/" className="text-xl font-bold">Quaticks</Link>
           </div>
           
@@ -21,7 +30,8 @@ export default function Header() {
           <nav className="hidden md:flex space-x-8">
             <Link href="/" className="hover:text-blue-200 transition">Home</Link>
             <Link href="/designers" className="hover:text-blue-200 transition">Designers</Link>
-            <Link href="/payment" className="hover:text-blue-200 transition">Pricing</Link>
+            {/* <Link href="/about" className="hover:text-blue-200 transition">About</Link> */}
+            <Link href="/faq" className="hover:text-blue-200 transition">FAQ</Link>
           </nav>
           
           {/* Mobile menu button */}
@@ -42,7 +52,8 @@ export default function Header() {
           <nav className="mt-4 md:hidden flex flex-col space-y-3 pb-3">
             <Link href="/" className="hover:text-blue-200 transition">Home</Link>
             <Link href="/designers" className="hover:text-blue-200 transition">Designers</Link>
-            <Link href="/payment" className="hover:text-blue-200 transition">Pricing</Link>
+            {/* <Link href="/about" className="hover:text-blue-200 transition">About</Link> */}
+            <Link href="/faq" className="hover:text-blue-200 transition">FAQ</Link>
           </nav>
         )}
       </div>
