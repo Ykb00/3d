@@ -70,7 +70,7 @@ export default function AboutPage() {
       <div className="bg-blue-600 text-white rounded-lg shadow-lg p-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Ready to bring your ideas to life?</h2>
         <p className="text-lg mb-6">
-          Whether you're looking for a single prototype or a production run, we're here to help.
+          Whether you&apos;re looking for a single prototype or a production run, we&apos;re here to help.
         </p>
         <Link href="/contact" className="inline-block bg-white text-blue-600 py-3 px-8 rounded-lg font-medium hover:bg-gray-100 transition">
           Contact Us Today

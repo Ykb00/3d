@@ -52,7 +52,7 @@ export default function ContactPage() {
               Contact via Email
             </h2>
             <p className="mb-4 text-gray-700">
-              Send us an email and we'll get back to you with a quote or additional information.
+              Send us an email and we&apos;ll get back to you with a quote or additional information.
             </p>
             <button 
               onClick={openGmail}
