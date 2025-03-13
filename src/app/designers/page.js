@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 // Mock data for different 3D printing capabilities
 const capabilities = [
@@ -119,10 +120,12 @@ export default function CapabilitiesPage() {
               <div className="mb-4">
                 <div className="flex items-center gap-4 mb-2">
                   <div className="w-20 h-20 flex items-center justify-center rounded-full bg-blue-100">
-                    <img
+                    <Image
                       src={capability.image}
                       alt={capability.category}
-                      className="w-14 h-14 object-contain"
+                      width={56}
+                      height={56}
+                      className="object-contain"
                     />
                   </div>
                   <h3 className="font-bold text-lg text-blue-800">{capability.category}</h3>
@@ -163,9 +166,11 @@ export default function CapabilitiesPage() {
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {capability.portfolio.map((item, index) => (
                     <div key={index} className="relative group">
-                      <img 
+                      <Image 
                         src={item.image} 
                         alt={item.title} 
+                        width={120}
+                        height={96}
                         className="w-full h-24 object-cover rounded-md"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-md">

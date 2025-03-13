@@ -17,7 +17,7 @@ const faqData = [
   {
     id: 3,
     question: "How do I submit my 3D model for printing?",
-    answer: "You can upload your 3D model files (STL, OBJ, etc.) through our website's upload form or send them directly via email. For large projects, we also accept file transfers through cloud storage services."
+    answer: "You can upload your 3D model files (STL, OBJ, etc.) through our website&apos;s upload form or send them directly via email. For large projects, we also accept file transfers through cloud storage services."
   },
   {
     id: 4,
@@ -26,7 +26,7 @@ const faqData = [
   },
   {
     id: 5,
-    question: "Do you offer design services if I don't have a 3D model?",
+    question: "Do you offer design services if I don&apos;t have a 3D model?",
     answer: "Yes, our team includes skilled 3D designers who can create models based on your sketches, descriptions, or concepts. We offer full design services from concept to final print-ready models."
   },
   {
@@ -98,7 +98,7 @@ export default function FAQPage() {
       <div className="max-w-3xl mx-auto mt-12 bg-white p-6 rounded-lg shadow-lg text-center">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Still have questions?</h2>
         <p className="text-gray-700 mb-6">
-          If you couldn't find the answer to your question, feel free to contact us directly.
+          If you couldn&apos;t find the answer to your question, feel free to contact us directly.
         </p>
         <div className="flex justify-center space-x-4">
           <a 
