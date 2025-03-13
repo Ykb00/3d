@@ -114,17 +114,17 @@ function PaymentContent() {
     
     switch (app) {
       case 'paytm':
-        paymentAppLink = `paytmmp://pay?pa=${paymentInfo.upiId}&pn=3DPrintService&am=${orderData.price}&cu=INR&tn=Order_${orderData.id.substring(0, 8)}`;
-        break;
+    paymentAppLink = 'paytmmp://';
+    break;
       case 'phonepe':
-        paymentAppLink = `phonepe://pay?pa=${paymentInfo.upiId}&pn=3DPrintService&am=${orderData.price}&cu=INR&tn=Order_${orderData.id.substring(0, 8)}`;
-        break;
+    paymentAppLink = 'phonepe://';
+    break;
       case 'googlepay':
-        paymentAppLink = `gpay://upi/pay?pa=${paymentInfo.upiId}&pn=3DPrintService&am=${orderData.price}&cu=INR&tn=Order_${orderData.id.substring(0, 8)}`;
-        break;
+    paymentAppLink = 'gpay://';
+    break;
       default:
-        paymentAppLink = paymentInfo.paymentLink;
-    }
+    paymentAppLink = paymentInfo.paymentLink;
+}
     
     // Save data to Supabase when payment button is clicked
     if (orderData.id && !paymentSaved) {
