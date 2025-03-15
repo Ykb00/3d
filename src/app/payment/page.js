@@ -117,10 +117,10 @@ function PaymentContent() {
     paymentAppLink = 'paytmmp://';
     break;
       case 'phonepe':
-    paymentAppLink = 'phonepe://';
+    paymentAppLink = 'intent://upi/pay#Intent;scheme=phonepe;package=com.phonepe.app;end;';
     break;
       case 'googlepay':
-    paymentAppLink = 'gpay://';
+    paymentAppLink = 'intent://pay#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end;';
     break;
       default:
     paymentAppLink = paymentInfo.paymentLink;
@@ -239,7 +239,7 @@ function PaymentContent() {
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold mb-4 text-blue-900">Contact Information</h2>
             <div className="mb-4">
-              <label htmlFor="mobile-number" className="block text-sm font-medium text-slate-700 mb-1">
+              <label htmlFor="mobile-number" className="block text-sm font-medium text-neutral-900 mb-1">
                 Mobile Number <span className="text-red-600">*</span>
               </label>
               <div className="relative">
@@ -247,7 +247,7 @@ function PaymentContent() {
                 <input
                   type="tel"
                   id="mobile-number"
-                  className={`w-full pl-12 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                  className={`w-full pl-12 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 text-black ${
                     mobileNumber && !mobileNumberValid 
                       ? 'border-red-300 focus:ring-red-200' 
                       : mobileNumberValid 

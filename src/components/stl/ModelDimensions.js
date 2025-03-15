@@ -16,6 +16,7 @@ const ModelDimensions = ({ dimensions, file }) => {
   // Define minimum payment thresholds
   const MIN_TOTAL_COST = 30;
   const MIN_ADVANCE_AMOUNT = 15;
+  const MIN_DUAL_COLORED_COST = 50;
   const MAX_DIMENSION = 250;
 
   // Colors available for each material - updated dual color options
@@ -33,26 +34,31 @@ const ModelDimensions = ({ dimensions, file }) => {
   };
 
   // Calculate cost whenever relevant parameters change
-  useEffect(() => {
-    if (dimensions && dimensions.volume) {
-      const volumeInCm3 = dimensions.volume / 1000;
-      const weight = volumeInCm3 * 1.3;
-      
-      const infillKey = strengthToInfill[strength].key;
-      const pricePerGram = materialPricing[material][infillKey];
-      let cost = weight * pricePerGram;
-      
-      // Apply minimum total cost if calculated cost is below threshold
+useEffect(() => {
+  if (dimensions && dimensions.volume) {
+    const volumeInCm3 = dimensions.volume / 1000;
+    const weight = volumeInCm3 * 1.3;
+    
+    const infillKey = strengthToInfill[strength].key;
+    const pricePerGram = materialPricing[material][infillKey];
+    let cost = weight * pricePerGram;
+    
+    // Apply minimum total cost if calculated cost is below threshold
+    // Use higher minimum threshold for dual colored PLA
+    if (material === 'coloredPLA') {
+      cost = Math.max(cost, MIN_DUAL_COLORED_COST);
+    } else {
       cost = Math.max(cost, MIN_TOTAL_COST);
-      
-      // Calculate advance amount (40% of total) with minimum threshold
-      let advance = cost * 0.4;
-      advance = Math.max(advance, MIN_ADVANCE_AMOUNT);
-      
-      setTotalCost(cost);
-      setAdvanceAmount(advance);
     }
-  }, [dimensions, material, strength]);
+    
+    // Calculate advance amount (40% of total) with minimum threshold
+    let advance = cost * 0.4;
+    advance = Math.max(advance, MIN_ADVANCE_AMOUNT);
+    
+    setTotalCost(cost);
+    setAdvanceAmount(advance);
+  }
+}, [dimensions, material, strength]);
 
   // Reset color when material changes
   useEffect(() => {
@@ -285,7 +291,7 @@ const ModelDimensions = ({ dimensions, file }) => {
                 : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
             }`}
           >
-            Colored PLA
+            DualColored PLA
           </button>
         </div>
         
@@ -310,21 +316,25 @@ const ModelDimensions = ({ dimensions, file }) => {
       </div>
       
       {/* Pricing information */}
-      <div className="mb-6 p-5 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-100">
-        <div className="flex justify-between mb-2">
-          <span className="font-medium text-indigo-900">Total Cost:</span>
-          <span className="font-bold text-indigo-900">₹{totalCost.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="font-medium text-indigo-900">Advance (40%):</span>
-          <span className="font-bold text-indigo-900">₹{advanceAmount.toFixed(2)}</span>
-        </div>
-        {(totalCost === MIN_TOTAL_COST || advanceAmount === MIN_ADVANCE_AMOUNT) && (
-          <div className="mt-2 text-xs text-indigo-700">
-            <p>* Minimum order cost is ₹{MIN_TOTAL_COST}, minimum advance payment is ₹{MIN_ADVANCE_AMOUNT}</p>
-          </div>
-        )}
-      </div>
+<div className="mb-6 p-5 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-100">
+  <div className="flex justify-between mb-2">
+    <span className="font-medium text-indigo-900">Total Cost:</span>
+    <span className="font-bold text-indigo-900">₹{totalCost.toFixed(2)}</span>
+  </div>
+  <div className="flex justify-between">
+    <span className="font-medium text-indigo-900">Advance (40%):</span>
+    <span className="font-bold text-indigo-900">₹{advanceAmount.toFixed(2)}</span>
+  </div>
+  {material === 'coloredPLA' ? (
+    <div className="mt-2 text-xs text-indigo-700">
+      <p>* Minimum order cost for Dual Colored PLA is ₹{MIN_DUAL_COLORED_COST}, minimum advance payment is ₹{MIN_ADVANCE_AMOUNT}</p>
+    </div>
+  ) : (totalCost === MIN_TOTAL_COST || advanceAmount === MIN_ADVANCE_AMOUNT) && (
+    <div className="mt-2 text-xs text-indigo-700">
+      <p>* Minimum order cost is ₹{MIN_TOTAL_COST}, minimum advance payment is ₹{MIN_ADVANCE_AMOUNT}</p>
+    </div>
+  )}
+</div>
       
       {/* Pay Advance Button */}
       <button 

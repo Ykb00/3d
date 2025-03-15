@@ -20,7 +20,7 @@ export default function STLViewerPage() {
     if (selectedFile && selectedFile.name.toLowerCase().endsWith('.stl')) {
       setFile(selectedFile);
     } else if (selectedFile) {
-      alert("Please upload a valid STL file.");
+      alert("Please upload a valid stl file.");
     }
   };
 
@@ -44,7 +44,7 @@ export default function STLViewerPage() {
       if (droppedFile.name.toLowerCase().endsWith('.stl')) {
         setFile(droppedFile);
       } else {
-        alert("Please upload a valid STL file.");
+        alert("Please upload a valid Stl file.");
       }
     }
   };

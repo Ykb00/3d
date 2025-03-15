@@ -21,11 +21,11 @@ const ImageCarousel = ({ images }) => {
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full mt-[-11rem] lg:mt-[-60px] ">
       {/* Main carousel container */}
-      <div className="relative h-[40rem] w-full rounded-xl overflow-hidden">
+      <div className="relative h-[40rem] w-full rounded-xl overflow-hidden ">
         {/* Image container with fixed height but preserving aspect ratio */}
-        <div className="w-full h-full flex items-center justify-center rounded-2xl">
+        <div className="w-full h-full flex items-center justify-center rounded-2xl ">
           <img 
             src={images[currentIndex].src} 
             alt={images[currentIndex].alt || `Slide ${currentIndex + 1}`}

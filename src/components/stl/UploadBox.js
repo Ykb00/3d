@@ -20,9 +20,28 @@ export default function UploadBox({ onFileSelect }) {
     setIsDragging(false);
   };
   
+  const isValidSTLFile = (file) => {
+    // Check both file extension and MIME type if available
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const isValidExtension = fileExtension === 'stl';
+    
+    // Some browsers/systems might recognize STL files with this MIME type
+    const isValidMimeType = file.type === 'application/vnd.ms-pki.stl' || 
+                           file.type === 'application/octet-stream' ||
+                           file.type === 'model/stl' ||
+                           file.type === '';  // Some systems might not assign a MIME type
+    
+    return isValidExtension && (isValidMimeType || file.type === '');
+  };
+  
   const uploadToSupabase = async (file) => {
-    if (!file || !file.name.endsWith('.stl')) {
-      alert('Please upload an STL file');
+    if (!file) {
+      alert('No file selected');
+      return;
+    }
+    
+    if (!isValidSTLFile(file)) {
+      alert('Please upload a valid STL file');
       return;
     }
     
