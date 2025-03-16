@@ -80,7 +80,7 @@ useEffect(() => {
       // Create a query string with all the necessary parameters
       const queryParams = new URLSearchParams({
         id: orderId,
-        fileName: file.name,
+        filePath: file.name,
         width: dimensions.width.toFixed(2),
         height: dimensions.height.toFixed(2),
         depth: dimensions.depth.toFixed(2),
@@ -93,7 +93,7 @@ useEffect(() => {
       
       console.log("Sending order details to payment page:", {
         id: orderId,
-        fileName: file.name,
+        filePath: file.name,
         dimensions: {
           width: dimensions.width,
           height: dimensions.height,
